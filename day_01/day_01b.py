@@ -1,10 +1,10 @@
 import math
 
-filename = "input_01.txt"
+filename = "day_01/input_01.txt"
 
 with open(filename) as f:
     content = f.readlines()
-content = [x.strip() for x in content]
+content = [int(x.strip()) for x in content]
 
 def total_weight(ini_weight):
     fuel = math.floor(int(ini_weight) / 3) - 2
