@@ -30,9 +30,7 @@ def process(data, noun, verb):
             data[resu] = data[arg1] * data[arg2]
         if oper == 99:
             index = 9999
-
         index += 4
-
     return data[0]
 
 for noun in range(0,100):
