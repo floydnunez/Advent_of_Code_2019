@@ -82,3 +82,4 @@ for elem in intersections:
         minimum = total
 
 print("minimum b:", minimum)
+#answer: 15612

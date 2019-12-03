@@ -38,3 +38,6 @@ for noun in range(0,100):
         result = process(data.copy(), noun, verb)
         if result == 19690720:
             print("noun", noun, "verb", verb)
+
+#answer noun 89 verb 76
+
