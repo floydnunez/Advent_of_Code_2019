@@ -8,7 +8,7 @@ image_data = content[0]
 print("image length:", len(image_data))
 layers = []
 
-for index in range(0, 10):
+for index in range(0, 100):
     layers.append(image_data[150 * index : 150 * (index + 1) ])
 
 layer_char_count = []
