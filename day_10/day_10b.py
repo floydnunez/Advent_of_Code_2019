@@ -51,8 +51,8 @@ def calc_angle(a, b):
     if (angle < 0):
         angle += 360
     #round a little
-    angle = math.floor(angle * 10000) / 10000
-    print("for ", b, "=", angle)
+#    angle = math.floor(angle * 10000) / 10000
+#    print("for ", b, "=", angle)
     return angle
 
 def calc_distance(a, b):
@@ -61,15 +61,26 @@ def calc_distance(a, b):
 
 win_point = Point(27, 19) #winner from last time
 
-list_angles = []
+list_dist = []
+list_asteroids = []
 
 for line in lines_from_asteroid[win_point]:
-    angle = calc_angle(line[0], line[1])
+    dist = calc_distance(line[0], line[1])
+    list_dist.append(dist)
+    list_asteroids.append(line[1])
+
+asteroids_by_distance = [x for _,x in sorted(zip(list_dist, list_asteroids), key=lambda pair: pair[0])]
+
+#print(asteroids_by_distance)
+
+list_angles = []
+
+for aster in asteroids_by_distance:
+    angle = calc_angle(win_point, aster)
     list_angles.append(angle)
-print(list_angles)
-list_asteroids = lines_from_asteroid[win_point]
+#print(list_angles)
 
-Z = [x for _,x in sorted(zip(list_angles, list_asteroids), key=lambda pair: pair[0])]
+asteroids_by_angle = [x for _,x in sorted(zip(list_angles, asteroids_by_distance), key=lambda pair: pair[0])]
 
-print(Z)
+print(asteroids_by_angle)
 
