@@ -17,14 +17,9 @@ def all(multiplier):
         return amounts
 
 
-    def apply_rules(rules, reverse_rules, rulesx, reverse_rulesx, needed, ore_used, amounts):
+    def apply_rules(rules, reverse_rules, needed, ore_used, amounts):
         already_got = amounts[needed[1]]
         rule_to_apply = reverse_rules[needed[1]]
-        rule_to_applyx = reverse_rulesx[needed[1]]
-        temp_result = rulesx[rule_to_applyx]
-        use_multiplied = False
-        if needed - already_got >= temp_result[0]:
-            use_multiplied = True
         if use_print: print('to get', needed, ' we use rule:', rule_to_apply, 'stored:', amounts)
         obtained = 0
         if already_got >= needed[0]:
@@ -38,8 +33,8 @@ def all(multiplier):
                     if use_print: print('------------------------using ore:', reagent[0])
                     ore_used += reagent[0]
                 else:
-                    ore_used, amounts = apply_rules(rules, reverse_rules, rulesx, reverse_rulesx, reagent, ore_used, amounts)
-            result = rulesx[rule_to_applyx]
+                    ore_used, amounts = apply_rules(rules, reverse_rules, reagent, ore_used, amounts)
+            result = rules[rule_to_apply]
             obtained += result[0]
         amounts = add_results(amounts, needed[1], needed[0], obtained)
         return ore_used, amounts
@@ -57,15 +52,11 @@ def all(multiplier):
             ingredients = necessary.split(',')
             for ingredient in ingredients:
                 amount, element = ingredient.strip().split(' ')
-                necessary_list.append((int(amount), element))
-                necessary_list_mult.append((int(amount) * multiplier, element))
+                necessary_list.append((int(amount) * multiplier, element))
             amount_result, result_element = result.strip().split(' ')
-            result_list = (int(amount_result), result_element)
-            result_list_mult = (int(amount_result) * multiplier, result_element)
+            result_list = (int(amount_result) * multiplier, result_element)
             necessary_tuple = tuple(necessary_list)
-            necessary_tuple_mult = tuple(necessary_list_mult)
             rules[necessary_tuple] = result_list
-            rulesx[necessary_tuple_mult] = result_list_mult
             if result_element == 'FUEL':
                 final_rule = necessary_tuple
             else:
@@ -81,7 +72,7 @@ def all(multiplier):
         ordered_rules = [x for _,x in sorted(zip(necessaries_length, necessaries))]
         ordered_rules.reverse()
 
-        return rules, rulesx, ordered_rules, final_rule
+        return rules, ordered_rules, final_rule
 
 
     def get_unique_elements(rules):
@@ -98,7 +89,7 @@ def all(multiplier):
         return uniques, amounts
 
 
-    rules, rulesx, ordered_rules, final_rule = parse_content(content)
+    rules, ordered_rules, final_rule = parse_content(content)
 
     unique_elems, amounts = get_unique_elements(rules)
     amounts['FUEL'] = 0
@@ -117,7 +108,6 @@ def all(multiplier):
     ore_used = 0
 
     reverse_rules = {v[1]: k for k, v in rules.items()}
-    reverse_rulesx = {v[1]: k for k, v in rulesx.items()}
 
 
     print(reverse_rules)
@@ -127,19 +117,28 @@ def all(multiplier):
     count = 0
     trillion = 1000000000000
     while ore_used < trillion:
-        ore_used, amounts = apply_rules(rules, reverse_rules, rulesx, reverse_rulesx, (1, 'FUEL'), ore_used, amounts)
+        ore_used, amounts = apply_rules(rules, reverse_rules, (1, 'FUEL'), ore_used, amounts)
         count += 1
         if count % 1000 == 0: print(count, ore_used)
 
     print(amounts)
     print('ore_used', ore_used, 'count:', count)
 
-all(20)
+multiplier = 7
+all(multiplier)
+print('multiplier:', multiplier)
 #wrong: 1259237 too high
 #wrong: 553102 too high
 
 #right 522031
 #part b: 1915595 too low
-#multiplier 100: 3566501
-#multiplier 1000: 3565001
-#multiplier 10000: 3565001
+
+#3566579
+
+#multiplier 5:
+#multiplier 10:
+#multiplier 20:     3566561
+#multiplier 100:    3566501
+#multiplier 1000:   3565001
+#multiplier 10000:  3565001
+#multiplier 100000: 3500001
