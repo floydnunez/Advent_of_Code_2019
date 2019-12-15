@@ -165,8 +165,12 @@ def get_color(x,y):
         color_per_cell[hashval] = 0
     return color_per_cell[hashval]
 
-
+first_time = True
 def get_curr_color():
+    global  first_time
+    if first_time:
+        first_time = False
+        return 1
     curr_cell = cells[-1]
     #print("get curr color:", curr_cell)
     curr_color = get_color(curr_cell[0], curr_cell[1])
